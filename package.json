@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "npx tsc",
-    "start": "npx nodemon index.js",
+    "start": "nodemon dist/index.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
     "test": "jest",
-    "serve:coverage": "npm run test && cd converage/lcov-report && npx serve"
+    "serve:coverage": "npm run test && cd coverage/lcov-report && npx serve"
   },
   "repository": {
     "type": "git",
@@ -45,6 +45,7 @@
     "eslint-plugin-promise": "^5.2.0",
     "jest": "^27.5.1",
     "nodemon": "^2.0.15",
+    "serve": "^13.0.2",
     "supertest": "^6.2.2",
     "ts-jest": "^27.1.4",
     "ts-node": "^10.7.0",
