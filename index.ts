@@ -1,36 +1,17 @@
-import express, { Express, Request,Response } from 'express'
 import dotenv from 'dotenv'
+import server from './src/server'
+import { LogError, LogSuccess } from './src/utils/logger'
 
 dotenv.config()
-
-const app: Express = express()
 const port = process.env.PORT || 8000
 
-app.listen(port, ()=> {
-    console.log(`Servidor levantado en http://localhost:${port}` )
+server.listen(port, ()=>{
+  LogSuccess(`[SERVER ON]: Running in http://localhost:${port}/api `)
 })
 
-app.get('/hello', (req: Request,res: Response) => {
-    const nombre =  req.query.name
-    if(!req.query.name){
-        res.json({ "data": { 
-        "status": 200,
-        "message": "Hola, Anónimo"
-        } 
-    })
-    } else {
-        res.json({ "data":{
-            "status": 200,
-            "message": "Hola, " + nombre
-        }})
-    }
+// En caso de que ocurra un error
+
+server.on('error', (error)=>{
+  LogError(`[SERVER ERROR]: ${error}`)
 })
 
-app.get('/', (req: Request, res: Response)=>{
-    res.json( {
-        "data":{ 
-        "status": 200,
-        "message": "Goodbye, world"
-        }
-    })
-})
