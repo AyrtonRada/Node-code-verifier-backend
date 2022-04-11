@@ -1,5 +1,6 @@
 # node-code-verifier-backend
 Noed express project - backend
+ PRIMER CLASE<br>
 
 Dependencias instaladas
 
@@ -25,3 +26,10 @@ Scripts generados
 Archivo .env
 
 Los valores varian segun el entorno en el que se este ejecutando, para éste primer caso se creará la variable PORT = 8000<br>
+
+SEGUNDA CLASE
+
+arhivo logger.ts: permite visualizar las peticiones por consola si hubo algun error<br>
+cors: permite que se hagan peticiones de dominios diferentes al que este desplegada la aplicacion<br>
+helmet: da seguridad en algunas peticiones<br>
+---------------------
