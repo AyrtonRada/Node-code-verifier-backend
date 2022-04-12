@@ -10,7 +10,8 @@ const server: Express = express()
 
 
 server.use('/api', routes)
-
+//Servidor estatico
+server.use(express.static('public'))
 //conexion con Mongoose
 
 //configuracion de seguridad
