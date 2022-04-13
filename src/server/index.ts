@@ -2,18 +2,27 @@ import express, { Express, Request, Response, Router} from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import helmet from 'helmet'
-import routes from '../routes'
+import router from '../routes'
+import mongoose from 'mongoose'
+import swaggerUi from 'swagger-ui-express'
 
 dotenv.config()
-
 const server: Express = express()
 
+//* Swagger configuracion y ruta
+server.use('/docs', swaggerUi.serve, swaggerUi.setup(undefined, {
+    swaggerOptions: {
+        url:  "/swagger.json",
+        explorer: true
+    }
+}))
 
-server.use('/api', routes)
+
+server.use('/api', router)
 //Servidor estatico
 server.use(express.static('public'))
 //conexion con Mongoose
-
+mongoose.connect('mongodb://localhost:27017/codeverification')
 //configuracion de seguridad
 server.use(helmet())
 server.use(cors())
