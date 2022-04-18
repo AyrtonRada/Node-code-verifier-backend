@@ -1,4 +1,4 @@
-import express, { Express, Request, Response, Router} from 'express'
+import express, { Express, Request, Response } from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import helmet from 'helmet'
