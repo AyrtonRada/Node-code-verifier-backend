@@ -7,12 +7,11 @@ export const kataEntity = () =>{
             name: String,
             description: String,
             level: Number,
-            user: String,
             date: Date,
             valoration: Number,
             chances: Number
         }
     )
 
-    return mongoose.model('Katas', kataSchema)
+    return mongoose.models.Katas || mongoose.model('Katas', kataSchema)
 }
