@@ -12,7 +12,7 @@ userRouter.route('/')
         LogInfo(`Query Param: ${id}`)
         const controller: UserController = new UserController()
         const response: any = await controller.getUsers(id)
-        return res.send(response)        
+        return res.status(200).send(response)        
     })
 
     .delete(async(req: Request, res: Response)=>{
@@ -20,7 +20,7 @@ userRouter.route('/')
         LogInfo(`Query Param: ${id}`)
         const controller: UserController = new UserController()
         const response: any = await controller.deleteUser(id)
-        return res.send(response)  
+        return res.status(204).send(response)  
     })
 
     .post(async (req: Request, res: Response) => {
@@ -38,7 +38,7 @@ userRouter.route('/')
         }
         
         const response:any = await controller.createUser(user)
-        return res.send(response) 
+        return res.status(201).send(response)
     })
 
     .put(async (req: Request, res: Response) => {
@@ -57,6 +57,14 @@ userRouter.route('/')
             
         }
         const response: any = await controller.updateUser(id, user)
-        return res.send(response)
+        return res.status(204).send(response)
     })
 export default userRouter
+
+/**
+ * 
+ * GET documentos => 200 OK
+ * CREATE documentos => 201 OK
+ * DELETE documentos => 200 (Entity)/ 204 (No Return)
+ * UPDATE documentos => 200 (Entity)/ 204 (No Return)
+ */
