@@ -28,7 +28,7 @@ kataRouter.route('/')
         let name: any = req?.query?.name
         let description: any = req?.query?.description
         let level: any = req?.query?.level
-        let date: any = req?.query?.date
+        let date: any = new Date()
         let valoration: any = req?.query?.valoration
         let chances: any = req?.query?.chances
         
@@ -52,7 +52,7 @@ kataRouter.route('/')
         let name: any = req?.query?.name
         let description: any = req?.query?.description
         let level: any = req?.query?.level
-        let date: any = req?.query?.date
+        let date: any = new Date()
         let valoration: any = req?.query?.valoration
         let chances: any = req?.query?.chances
         LogInfo(`Query Param: ${id}, ${name}, ${description}, ${level}, ${date}, ${valoration}, ${chances}`)
