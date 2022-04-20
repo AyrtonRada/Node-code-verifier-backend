@@ -2,6 +2,7 @@ import { userEntity } from "../entities/User.entity";
 import { LogSuccess, LogError } from "../../utils/logger";
 import { IUser } from "../interfaces/IUser.interface";
 import { IAuth } from "../interfaces/IAuth.interface";
+import { UserResponse } from "../types/UsersResponse.type"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -10,10 +11,28 @@ dotenv.config();
 
 const secret = process.env.SECRETKEY || "MYSECRETKEY";
 
-export const getAllUsers = async (): Promise<any[] | undefined> => {
+export const getAllUsers = async (page: number, limit: number): Promise<any[] | undefined> => {
   try {
     let userModel = userEntity();
-    return await userModel.find({ isDelete: false });
+    let response: any = {}
+
+    await userModel.find({ isDelete: false })
+      .select('name email age')
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .exec()
+      .then((users: IUser[]) => {
+        response.users = users
+      })
+    
+    await userModel.countDocuments()
+      .then((total: number) => {
+        response.totalPages = Math.ceil(total / limit)
+        response.currentPage = page
+      })
+
+      return response
+
   } catch (error) {
     LogError(`[ORM ERROR]: Getting All Users: ${error}`);
   }
@@ -23,7 +42,7 @@ export const getUserById = async (id: string): Promise<any | undefined> => {
   try {
     let userModel = userEntity();
 
-    return await userModel.findById(id);
+    return await userModel.findById(id).select('name email  age');
   } catch (error) {
     LogError(`[ORM ERROR]: Getting User By ID: ${error}`);
   }

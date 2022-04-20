@@ -9,9 +9,12 @@ let userRouter = express.Router()
 userRouter.route('/')
     .get(verifyToken, async (req: Request, res: Response)=>{
         let id: any = req?.query?.id
+        let page: any = req?.query?.page || 1
+        let limit: any = req?.query?.limit || 10
+
         LogInfo(`Query Param: ${id}`)
         const controller: UserController = new UserController()
-        const response: any = await controller.getUsers(id)
+        const response: any = await controller.getUsers(page, limit, id)
         return res.status(200).send(response)        
     })
 
