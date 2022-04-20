@@ -3,7 +3,7 @@ import { IUserController } from "./interfaces";
 import { LogSuccess, LogError, LogWarning } from "../utils/logger";
 
 //ORM - Users
-import { getAllUsers, getUserById, deleteUserById, createUser, updateUserById } from "../domain/orm/User.orm";
+import { getAllUsers, getUserById, deleteUserById, updateUserById } from "../domain/orm/User.orm";
 
 @Route("/api/users")
 @Tags("UserController")

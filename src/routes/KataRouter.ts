@@ -1,13 +1,14 @@
 import express, {Request, Response} from "express"
 import { KataController } from "../controller/KatasController"
 import { LogInfo } from "../utils/logger"
+import { verifyToken } from "../middlewares/verifyToken.middleware"
 
 
 let kataRouter = express.Router()
 
 // localhost:8000/api/katas
 kataRouter.route('/')
-    .get(async (req: Request, res: Response)=>{
+    .get(verifyToken, async (req: Request, res: Response)=>{
         let id: any = req?.query?.id
         LogInfo(`Query Param: ${id}`)
         const controller: KataController = new KataController()
@@ -15,7 +16,7 @@ kataRouter.route('/')
         return res.send(response)        
     })
 
-    .delete(async(req: Request, res: Response)=>{
+    .delete(verifyToken, async(req: Request, res: Response)=>{
         let id: any = req?.query?.id
         LogInfo(`Query Param: ${id}`)
         const controller: KataController = new KataController()
@@ -23,7 +24,7 @@ kataRouter.route('/')
         return res.send(response)  
     })
 
-    .post(async (req: Request, res: Response) => {
+    .post(verifyToken, async (req: Request, res: Response) => {
         
         let name: any = req?.query?.name
         let description: any = req?.query?.description
@@ -47,7 +48,7 @@ kataRouter.route('/')
         return res.send(response) 
     })
 
-    .put(async (req: Request, res: Response) => {
+    .put( verifyToken, async (req: Request, res: Response) => {
         let id: any = req?.query?.id        
         let name: any = req?.query?.name
         let description: any = req?.query?.description
