@@ -16,6 +16,7 @@ export class UserController implements IUserController {
         if(id){
             LogSuccess(`[/api/users] Get User By ID: ${id}`);
             response = await getUserById(id)
+            response.password = ''
         }else{
                 LogSuccess('[/api/users] Get All Users Request')
                 response = await getAllUsers()
@@ -42,21 +43,6 @@ export class UserController implements IUserController {
                 message: 'Please, provide an ID  to remove from database'
             }
         }
-        return response
-    }
-
-    @Post("/")
-    public async createUser(user: any): Promise<any>{
-         
-        let response: any = ""
-
-        await createUser(user)
-        .then(()=>{
-            LogSuccess(`[/api/users] Create User: ${user}`)
-            response = {
-                message: `User created successfully: ${user.name}`
-            }
-        })
         return response
     }
 

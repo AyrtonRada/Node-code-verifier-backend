@@ -3,13 +3,17 @@ import { AuthController  } from "../controller/AuthController";
 import { IUser } from "../domain/interfaces/IUser.interface";
 import { IAuth } from "../domain/interfaces/IAuth.interface";
 import bcrypt from 'bcrypt';
+import {verifyToken} from '../middlewares/verifyToken.middleware'
+import bodyParser from 'body-parser'
 
+
+let jsonParser = bodyParser.json()
 let authRouter = express.Router();
 
 authRouter.route('/register')
-    .post (async (req:Request, res: Response) => {
+    .post (jsonParser, async (req:Request, res: Response) => {
 
-        let { name, email, password, age } = req.body;
+        let { name, email, password, age } = req?.body;
         let hashedPassword = '';
 
         if( name && password && email && age){
@@ -28,6 +32,10 @@ authRouter.route('/register')
 
             return res.status(200).send(response);
 
+        }else{
+            return res.status(400).send({
+                message: '[ERROR User Data missing]: No user can be registered'
+            })
         }
 
 })
@@ -35,9 +43,9 @@ authRouter.route('/register')
 
 
 authRouter.route('/login')
-    .post (async (req:Request, res: Response) => {
+    .post (jsonParser, async (req:Request, res: Response) => {
 
-        let { email, password } = req.body;
+        let { email, password } = req?.body;
 
         if( email && password){
 
@@ -51,8 +59,30 @@ authRouter.route('/login')
 
             return res.status(200).send(response);
 
+        }else{
+            return res.status(400).send({
+                message: '[ERROR User Data missing]: No user can be registered'
+            })
         }
 
 });
+
+authRouter.route('/me')
+    .get(verifyToken, async (req: Request, res: Response) => {
+
+        let id: any = req?.query?.id;
+
+        if(id){
+
+            const controller: AuthController = new AuthController();
+            let response: any = await controller.userData(id);
+            return res.status(200).send(response);
+
+        }else{
+            return res.status(401).send({
+                message: 'You are not authorised to perform this action'
+            })
+        }
+    })
 
 export default authRouter;

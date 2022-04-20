@@ -3,8 +3,8 @@ import { IAuthController } from './interfaces';
 import { LogSuccess, LogError, LogWarning } from "../utils/logger";
 import { IUser } from "../domain/interfaces/IUser.interface";
 import { IAuth } from "../domain/interfaces/IAuth.interface";
-import { registerUser, loginUser, logoutUser } from "../domain/orm/User.orm";
-
+import { registerUser, loginUser, logoutUser, getUserById } from "../domain/orm/User.orm";
+import { AuthResponse, ErrorResponse} from '../controller/types'
 
 @Route("/api/auth")
 @Tags("AuthController")
@@ -16,9 +16,9 @@ export class AuthController implements IAuthController {
         let response: any = '';
 
         if(user){
-            LogSuccess(`[/api/auth/register] Register New User: ${user} `);
+            LogSuccess(`[/api/auth/register] Register New User: ${user.email} `);
             await registerUser(user).then((r) => {
-                LogSuccess(`[/api/auth/register] Created User: ${user} `);
+                LogSuccess(`[/api/auth/register] Created User: ${user.email} `);
                 response = {
                     message: `User created successfully: ${user.name}`
                 }
@@ -26,7 +26,7 @@ export class AuthController implements IAuthController {
         }else {
             LogWarning('[/api/auth/register] Register needs User Entity')
             response = {
-                message: 'Please, provide a User Entity to create one'
+                message: 'User not Registered: Please, provide a User Entity to create one'
             }
         }
 
@@ -37,26 +37,39 @@ export class AuthController implements IAuthController {
     @Post("/login")
     public async loginUser(auth: IAuth): Promise<any> {
 
-        let response: any = '';
+        let response: AuthResponse | ErrorResponse | undefined;
 
         if(auth){
             LogSuccess(`[/api/auth/register] Register New User: ${auth.email} `);
-            await loginUser(auth).then((r) => {
-                LogSuccess(`[/api/auth/login] Logged In User: ${auth.email} `);
-                response = {
-                    message: `User Logged In successfully: ${auth.email}`,
-                    token: r.token // JWT generated for logged in user
-                }
-            });
+            let data = await loginUser(auth)
+            
+            response = {
+                token: data.token,
+                message: `Welcome, ${data.user.name}`
+            }
         }else {
             LogWarning('[/api/auth/login] Register needs Auth Entity (email && password')
             response = {
+                error: '[AUTH ERROR]: Email & Password are needed',
                 message: 'Please, provide a email && password to login'
             }
         }
 
         return response;
 
+    }
+
+    @Get("/me")
+    public async userData(@Query()id: string): Promise<any>{
+        let response: any = ''
+        if(id){
+            LogSuccess(`[/api/users] Get User Data By ID: ${id} `);
+            response = await getUserById(id);
+
+            response.password = '';
+        }
+        
+        return response;
     }
 
     @Post("/logout") //Cierra sesion

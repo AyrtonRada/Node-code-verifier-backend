@@ -1,13 +1,13 @@
 import express, {Request, Response} from "express"
 import { UserController } from "../controller/UsersController"
 import { LogInfo } from "../utils/logger"
-
+import { verifyToken } from '../middlewares/verifyToken.middleware'
 
 let userRouter = express.Router()
 
 // localhost:8000/api/users
 userRouter.route('/')
-    .get(async (req: Request, res: Response)=>{
+    .get(verifyToken, async (req: Request, res: Response)=>{
         let id: any = req?.query?.id
         LogInfo(`Query Param: ${id}`)
         const controller: UserController = new UserController()
@@ -15,7 +15,7 @@ userRouter.route('/')
         return res.status(200).send(response)        
     })
 
-    .delete(async(req: Request, res: Response)=>{
+    .delete(verifyToken, async(req: Request, res: Response)=>{
         let id: any = req?.query?.id
         LogInfo(`Query Param: ${id}`)
         const controller: UserController = new UserController()
@@ -23,25 +23,7 @@ userRouter.route('/')
         return res.status(204).send(response)  
     })
 
-    .post(async (req: Request, res: Response) => {
-        
-        let name: any = req?.query?.name
-        let age: any = req?.query?.age
-        let email: any = req?.query?.email
-        
-        const controller: UserController = new UserController()
-        
-        let user = {
-            name: name,
-            email: email,
-            age: age
-        }
-        
-        const response:any = await controller.createUser(user)
-        return res.status(201).send(response)
-    })
-
-    .put(async (req: Request, res: Response) => {
+    .put(verifyToken, async (req: Request, res: Response) => {
         let id: any = req?.query?.id        
         let name: any = req?.query?.name
         let age: any = req?.query?.age

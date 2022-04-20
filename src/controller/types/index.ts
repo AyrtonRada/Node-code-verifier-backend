@@ -11,3 +11,8 @@ export type GoodbyeResponse = {
     message: string,
     date: string | number
 }
+
+export type AuthResponse = {
+    message: string,
+    token: string
+}

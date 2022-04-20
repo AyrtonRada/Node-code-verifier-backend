@@ -1,6 +1,9 @@
 import jwt from 'jsonwebtoken'
 import { Request, Response, NextFunction} from 'express'
+import dotenv from 'dotenv'
 
+dotenv.config()
+const secret = process.env.SECRETKEY || 'MYSECRETKEY'
 export const verifyToken = (req: Request, res: Response, next: NextFunction) =>{
 
     let token: any = req.headers['x-access-token'] //busca por propiedad en el header
@@ -14,7 +17,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) =>{
     }
 
     //verifica el token obtenido
-    jwt.verify(token, '', (err: any, decoded: any) => {
+    jwt.verify(token, secret, (err: any, decoded: any) => {
         if(err){
             return res.status(500).send({
                 authenticationError: 'Error en verificar JWT ',
