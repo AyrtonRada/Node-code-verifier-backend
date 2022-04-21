@@ -1,8 +1,11 @@
 import { userEntity } from "../entities/User.entity";
+import { kataEntity } from "../entities/Kata.Entity";
 import { LogSuccess, LogError } from "../../utils/logger";
 import { IUser } from "../interfaces/IUser.interface";
 import { IAuth } from "../interfaces/IAuth.interface";
+import { IKatas } from "../interfaces/IKatas.interface";
 import { UserResponse } from "../types/UsersResponse.type"
+import mongoose from 'mongoose'
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -42,7 +45,7 @@ export const getUserById = async (id: string): Promise<any | undefined> => {
   try {
     let userModel = userEntity();
 
-    return await userModel.findById(id).select('name email  age');
+    return await userModel.findById(id).select('name email  age katas');
   } catch (error) {
     LogError(`[ORM ERROR]: Getting User By ID: ${error}`);
   }
@@ -120,3 +123,40 @@ export const loginUser = async (auth: IAuth): Promise<any | undefined> => {
 };
 
 export const logoutUser = async (): Promise<any | undefined> => {};
+
+//obtener la coleccion de usuarios en mongo
+export const getKatasFromUser = async (page: number, limit: number, id: string): Promise<any[] | undefined> => {
+  try {
+    let userModel = userEntity()
+    let katasModel = kataEntity()
+    let katasFound: IKatas[] = []
+    let response: any = {
+      katas: []
+    }
+    
+    await userModel.findById(id)
+      .then(async (user:IUser) => {
+        response.user = user.email
+
+        let objectIds: mongoose.Types.ObjectId[] = []
+        user.katas.forEach((kataID: string) => {
+            let objectID = new mongoose.Types.ObjectId(kataID)
+            objectIds.push(objectID)
+        });
+
+        await katasModel.find({"_id": {"$in": objectIds }})
+          .then((katas: IKatas[])=>{
+              katasFound = katas
+          })
+      })
+      .catch((error)=> {
+        LogError(`[ORM ERROR]: Obtaining User: ${error}`)
+      })
+
+      response.katas = katasFound
+      
+      return response
+  } catch(error){
+    LogError(`[ORM ERROR]: Getting All Users: ${error}`)
+  }
+}

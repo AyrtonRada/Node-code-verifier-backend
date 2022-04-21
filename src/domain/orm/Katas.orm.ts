@@ -48,7 +48,7 @@ export const deleteKataById = async (id: string): Promise<any | undefined> => {
   }
 }
   //create 
-  export const createKata = async (kata:any): Promise<any | undefined> => {
+  export const createKata = async (kata: IKatas): Promise<any | undefined> => {
     try {
       
       let kataModel = kataEntity()

@@ -4,6 +4,7 @@ import { LogSuccess, LogError, LogWarning } from "../utils/logger";
 
 //ORM - Users
 import { getAllKatas, getKataById, deleteKataById, createKata, updateKataById } from "../domain/orm/Katas.orm";
+import { IKatas } from "../domain/interfaces/IKatas.interface";
 
 @Route("/api/katas")
 @Tags("KatasController")
@@ -46,22 +47,29 @@ export class KataController implements IKatasController {
     }
 
     @Post("/")
-    public async createKata(kata: any): Promise<any>{
+    public async createKata(kata: IKatas): Promise<any>{
          
         let response: any = ""
 
-        await createKata(kata)
-        .then(()=>{
-            LogSuccess(`[/api/katas] Create Katas: ${kata}`)
-            response = {
-                message: `Kata created successfully: ${kata.name}`
-            }
-        })
-        return response
+        if(kata){
+            LogSuccess(`[/api/katas] Create New Kata: ${kata.name}`)
+            await createKata(kata)
+            .then(()=>{
+                LogSuccess(`[/api/katas] Created Kata: ${kata.name}`)
+                response = {
+                    message: `Kata created successfully: ${kata.name}`
+                }
+            })
+    }else {
+        LogWarning('[/api/katas] Register needs Kata Entity')
+        response = {
+            message: 'Kata not Registered: Please, provide a Kata Entity to create one'
+        }
     }
-
+    return response
+}
     @Put("/")
-    public async updateKata(@Query()id: string, kata: any): Promise<any> {
+    public async updateKata(@Query()id: string, kata: IKatas): Promise<any> {
         let response: any =""
         if(id){
             LogSuccess(`[/api/katas] Update Kata By ID: ${id}`)

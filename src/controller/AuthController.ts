@@ -40,7 +40,7 @@ export class AuthController implements IAuthController {
         let response: AuthResponse | ErrorResponse | undefined;
 
         if(auth){
-            LogSuccess(`[/api/auth/register] Register New User: ${auth.email} `);
+            LogSuccess(`[/api/auth/login] Login User: ${auth.email} `);
             let data = await loginUser(auth)
             
             response = {
@@ -48,7 +48,7 @@ export class AuthController implements IAuthController {
                 message: `Welcome, ${data.user.name}`
             }
         }else {
-            LogWarning('[/api/auth/login] Register needs Auth Entity (email && password')
+            LogWarning('[/api/auth/login] Login needs Auth Entity (email && password')
             response = {
                 error: '[AUTH ERROR]: Email & Password are needed',
                 message: 'Please, provide a email && password to login'

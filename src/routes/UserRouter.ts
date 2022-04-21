@@ -2,6 +2,7 @@ import express, {Request, Response} from "express"
 import { UserController } from "../controller/UsersController"
 import { LogInfo } from "../utils/logger"
 import { verifyToken } from '../middlewares/verifyToken.middleware'
+import { KataController } from "../controller/KatasController"
 
 let userRouter = express.Router()
 
@@ -44,6 +45,17 @@ userRouter.route('/')
         const response: any = await controller.updateUser(id, user)
         return res.status(204).send(response)
     })
+
+userRouter.route('/katas')
+    .get(verifyToken, async (req: Request, res: Response)=>{
+        let id: any = req?.query?.id
+        let page: any = req?.query?.page || 1
+        let limit: any = req?.query?.limit || 10
+        const controller: KataController = new KataController()
+        const response: any = await controller.getKatas(page, limit, id)
+        return res.status(200).send(response)        
+    })
+
 export default userRouter
 
 /**

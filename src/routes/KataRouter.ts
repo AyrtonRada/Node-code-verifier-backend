@@ -2,8 +2,10 @@ import express, {Request, Response} from "express"
 import { KataController } from "../controller/KatasController"
 import { LogInfo } from "../utils/logger"
 import { verifyToken } from "../middlewares/verifyToken.middleware"
+import bodyParser from 'body-parser'
+import { KataLevel } from "../domain/interfaces/IKatas.interface"
 
-
+let jsonParser = bodyParser.json()
 let kataRouter = express.Router()
 
 // localhost:8000/api/katas
@@ -24,53 +26,75 @@ kataRouter.route('/')
         LogInfo(`Query Param: ${id}`)
         const controller: KataController = new KataController()
         const response: any = await controller.deleteKata(id)
-        return res.send(response)  
+        return res.status(200).send(response)  
     })
 
-    .post(verifyToken, async (req: Request, res: Response) => {
+    .post(jsonParser, verifyToken, async (req: Request, res: Response) => {
         
-        let name: any = req?.query?.name
-        let description: any = req?.query?.description
-        let level: any = req?.query?.level
-        let date: any = new Date()
-        let valoration: any = req?.query?.valoration
-        let chances: any = req?.query?.chances
+        let name: string = req?.body?.name
+        let description: string = req?.body?.description || ''
+        let level: KataLevel = req?.body?.level
+        let intents: number = req?.body?.intents || 0
+        let stars: number = req?.body?.starts || 0
+        let creator: string = req?.body?.creator 
+        let solution: string = req?.body?.solution || ''
+        let participants: string[] = req?.body?.participants || []
         
-        const controller: KataController = new KataController()
-        
-        let kata = {
-            name: name,
-            description: description,
-            level: level,
-            date: date,
-            valoration: valoration,
-            chances: chances
+        if( name && description && level && intents >= 0 && stars >= 0 && creator && solution && participants.length >= 0){
+
+            const controller: KataController = new KataController()
+            let kata = {
+                name: name,
+                description: description,
+                level: level,
+                intents: intents,
+                stars: stars,
+                creator: creator,
+                solution: solution,
+                participants: participants
+            }
+            const response: any = await controller.createKata(kata)
+            return res.status(200).send(response)
+
+        }else{
+            return res.status(400).send({
+                message: '[ERROR] Updating Kata. You need to sen all attrs of Kata to update it'
+            })
         }
-        
-        const response:any = await controller.createKata(kata)
-        return res.send(response) 
     })
 
-    .put( verifyToken, async (req: Request, res: Response) => {
+    .put( jsonParser, verifyToken, async (req: Request, res: Response) => {
         let id: any = req?.query?.id        
-        let name: any = req?.query?.name
-        let description: any = req?.query?.description
-        let level: any = req?.query?.level
-        let date: any = new Date()
-        let valoration: any = req?.query?.valoration
-        let chances: any = req?.query?.chances
-        LogInfo(`Query Param: ${id}, ${name}, ${description}, ${level}, ${date}, ${valoration}, ${chances}`)
+        let name: string = req?.body?.name
+        let description: string = req?.body?.description || ''
+        let level: KataLevel = req?.body?.level
+        let intents: number = req?.body?.intents || 0
+        let stars: number = req?.body?.starts || 0
+        let creator: string = req?.body?.creator 
+        let solution: string = req?.body?.solution || ''
+        let participants: string[] = req?.body?.participants || []
         
-        const controller: KataController = new KataController()
-        let kata = {
-            name: name,
-            description: description,
-            level: level,
-            date: date,
-            valoration: valoration,
-            chances: chances
+        if( name && description && level && intents >= 0 && stars >= 0 && creator && solution && participants.length >= 0){
+
+            const controller: KataController = new KataController()
+            let kata = {
+                name: name,
+                description: description,
+                level: level,
+                intents: intents,
+                stars: stars,
+                creator: creator,
+                solution: solution,
+                participants: participants
+            }
+            const response: any = await controller.updateKata(id, kata)
+            return res.status(200).send(response)
+
+        }else{
+            return res.status(400).send({
+                message: '[ERROR] Updating Kata. You need to sen all attrs of Kata to update it'
+            })
         }
-        const response: any = await controller.updateKata(id, kata)
-        return res.send(response)
     })
+
 export default kataRouter

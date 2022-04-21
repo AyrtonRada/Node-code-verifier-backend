@@ -1,17 +1,19 @@
 import mongoose from 'mongoose'
+import { IKatas } from '../interfaces/IKatas.interface'
 
 export const kataEntity = () =>{
 
-    let kataSchema = new mongoose.Schema(
+    let kataSchema = new mongoose.Schema<IKatas>(
         {
-            name: String,
-            description: String,
-            level: Number,
-            date: Date,
-            valoration: Number,
-            chances: Number
-        }
-    )
+            name: { type: String, required: true},
+            description: { type: String, required: true},
+            level: { type: String, required: true},
+            intents: { type: Number, required: true},
+            stars: { type: Number, required: true},
+            creator: { type: String, required: true},
+            solution: { type: String, required: true},
+            participants: { type: [], required: true}
+        })
 
-    return mongoose.models.Katas || mongoose.model('Katas', kataSchema)
+    return mongoose.models.Katas || mongoose.model<IKatas>('Katas', kataSchema)
 }

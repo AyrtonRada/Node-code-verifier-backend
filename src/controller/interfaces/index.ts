@@ -1,6 +1,7 @@
 import { BasicResponse } from "../types"
 import { GoodbyeResponse } from "../types"
 import { IUser } from "../../domain/interfaces/IUser.interface"
+import { IKatas } from "../../domain/interfaces/IKatas.interface"
 
 export interface IHelloController{
     getMessage(name?:string): Promise<BasicResponse>
@@ -19,8 +20,8 @@ export interface IUserController{
 export interface IKatasController{
     getKatas(page: number, limit: number, id?: string): Promise<any> // Obtener todos los usuarios o por ID
     deleteKata(id?: string): Promise<any>
-    createKata(kata: any): Promise<any>
-    updateKata(id: string, kata: any): Promise<any>
+    createKata(kata: IKatas): Promise<any>
+    updateKata(id: string, kata: IKatas): Promise<any>
 }
 
 export interface IAuthController {
