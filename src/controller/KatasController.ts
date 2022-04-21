@@ -1,5 +1,5 @@
 import { Delete, Get, Post, Put, Query, Route, Tags } from "tsoa";
-import { KatasController } from "./interfaces";
+import { IKatasController } from "./interfaces";
 import { LogSuccess, LogError, LogWarning } from "../utils/logger";
 
 //ORM - Users
@@ -7,10 +7,10 @@ import { getAllKatas, getKataById, deleteKataById, createKata, updateKataById } 
 
 @Route("/api/katas")
 @Tags("KatasController")
-export class KataController implements KatasController {
+export class KataController implements IKatasController {
     
     @Get("/")
-    public async getKatas(@Query()id?: string): Promise<any> {
+    public async getKatas(@Query()page: number, @Query()limit: number, @Query()id?: string): Promise<any> {
         
         let response: any = ""
         if(id){
@@ -18,7 +18,7 @@ export class KataController implements KatasController {
             response = await getKataById(id)
         }else{
                 LogSuccess('[/api/katas] Get All Katas Request')
-                response = await getAllKatas()
+                response = await getAllKatas(page, limit)
         }
     
         return response

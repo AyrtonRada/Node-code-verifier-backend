@@ -1,10 +1,28 @@
 import { kataEntity } from "../entities/Kata.Entity";
 import { LogSuccess, LogError } from "../../utils/logger";
+import { IKatas } from "../interfaces/IKatas.interface";
 
-export const getAllKatas = async (): Promise<any[] | undefined> => {
+export const getAllKatas = async (page: number, limit: number): Promise<any[] | undefined> => {
   try {
     let kataModel = kataEntity();
-    return await kataModel.find({ isDelete: false });
+    let response: any = {}
+
+    await kataModel.find({isDelete: false})
+      .select('name description level valoration date')
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .exec()
+      .then((katas: IKatas[])=>{
+        response.katas = katas
+      })
+
+      await kataModel.countDocuments()
+        .then((total: number) => {
+          response.totalPages = Math.ceil(total/limit)
+          response.currentPage = page
+        })
+
+        return response
   
   } catch (error) {
     LogError(`[ORM ERROR]: Getting All Katas: ${error}`);

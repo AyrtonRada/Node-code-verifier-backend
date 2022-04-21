@@ -10,9 +10,12 @@ let kataRouter = express.Router()
 kataRouter.route('/')
     .get(verifyToken, async (req: Request, res: Response)=>{
         let id: any = req?.query?.id
+        let page: any = req?.query?.page || 1
+        let limit: any = req?.query?.limit || 10
+        
         LogInfo(`Query Param: ${id}`)
         const controller: KataController = new KataController()
-        const response: any = await controller.getKatas(id)
+        const response: any = await controller.getKatas(page, limit, id)
         return res.send(response)        
     })
 
