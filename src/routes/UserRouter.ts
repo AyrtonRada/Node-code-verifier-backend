@@ -51,7 +51,7 @@ userRouter.route('/katas')
         let id: any = req?.query?.id
         let page: any = req?.query?.page || 1
         let limit: any = req?.query?.limit || 10
-        const controller: KataController = new KataController()
+        const controller: UserController = new UserController()
         const response: any = await controller.getKatas(page, limit, id)
         return res.status(200).send(response)        
     })

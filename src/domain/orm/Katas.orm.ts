@@ -8,7 +8,6 @@ export const getAllKatas = async (page: number, limit: number): Promise<any[] | 
     let response: any = {}
 
     await kataModel.find({isDelete: false})
-      .select('name description level valoration date')
       .limit(limit)
       .skip((page - 1) * limit)
       .exec()

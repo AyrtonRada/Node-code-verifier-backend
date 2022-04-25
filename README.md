@@ -1,6 +1,5 @@
 # node-code-verifier-backend
 Noed express project - backend
- PRIMER CLASE<br>
 
 Dependencias instaladas
 
@@ -26,17 +25,20 @@ Scripts generados
 Archivo .env
 
 Los valores varian segun el entorno en el que se este ejecutando, para éste primer caso se creará la variable PORT = 8000<br>
----------------------
-SEGUNDA CLASE
 
 arhivo logger.ts: permite visualizar las peticiones por consola si hubo algun error<br>
 cors: permite que se hagan peticiones de dominios diferentes al que este desplegada la aplicacion<br>
 helmet: da seguridad en algunas peticiones<br>
----------------------
-TERCERA CLASE
 
 ts-loader: para ejecutar los test (en este caso jest)<br>
 @types/swagger-jsdoc: va a generar una pequeña web que resumen todas las apis rest full para que cualquier desarrollador de front que necesite esa informacion para saber que tipo de endpoints existen y que tipos de informacion puede mandar y que tipo de informacion va a recibir.<br> 
 @types/swagger-ui-express<br>
-npm i tsoa: permite poder documentar a traves de anotaciones nuestro codigo.<br>
+@types/bcryptjs<br>
+@types/jsonwebtoken<br>
+@types/body-parser<br>
 (Script)"build:prod" : "npx webpack --mode production"<br>
+npm i tsoa: permite poder documentar a traves de anotaciones nuestro codigo.<br>
+npm i bcrypt: / bcryptjs: se usa para cifrar contenido <br>
+npm i body-parser: se usa para poder leer json del body<br>
+jsonwebtoken: gestionara los token que se genere<br>
+
