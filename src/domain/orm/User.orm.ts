@@ -138,13 +138,7 @@ export const getKatasFromUser = async (page: number, limit: number, id: string):
       .then(async (user:IUser) => {
         response.user = user.email
 
-        let objectIds: mongoose.Types.ObjectId[] = []
-        user.katas.forEach((kataID: string) => {
-            let objectID = new mongoose.Types.ObjectId(kataID)
-            objectIds.push(objectID)
-        });
-
-        await katasModel.find({"_id": {"$in": objectIds }})
+        await katasModel.find({"creator": {"$in": id }})
           .then((katas: IKatas[])=>{
               katasFound = katas
           })

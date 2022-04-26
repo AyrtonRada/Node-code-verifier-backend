@@ -67,7 +67,7 @@ userRouter.route('/katas')
         let level: KataLevel = req?.body?.level
         let intents: number = req?.body?.intents || 0
         let stars: number = req?.body?.starts || 0
-        let creator: string = req?.body?.creator || id
+        let creator: string = id
         let solution: string = req?.body?.solution || ''
         let participants: string[] = req?.body?.participants || []
         
