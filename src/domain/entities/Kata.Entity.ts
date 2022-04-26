@@ -10,7 +10,7 @@ export const kataEntity = () =>{
             level: { type: String, required: true},
             intents: { type: Number, required: true},
             stars: { type: Number, required: true},
-            creator: { type: String, required: true},
+            creator: { type: String},
             solution: { type: String, required: true},
             participants: { type: [], required: true}
         })

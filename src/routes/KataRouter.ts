@@ -58,7 +58,7 @@ kataRouter.route('/')
 
         }else{
             return res.status(400).send({
-                message: '[ERROR] Updating Kata. You need to sen all attrs of Kata to update it'
+                message: '[ERROR] Creating Kata. You need to sen all attrs of Kata to creating it'
             })
         }
     })

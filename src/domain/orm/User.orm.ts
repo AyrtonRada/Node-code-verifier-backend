@@ -160,3 +160,13 @@ export const getKatasFromUser = async (page: number, limit: number, id: string):
     LogError(`[ORM ERROR]: Getting All Users: ${error}`)
   }
 }
+
+export const getUserByEmail = async (decoded: string): Promise<any | undefined> => {
+  try {
+    let userModel = userEntity();
+
+    return await userModel.findOne({email: decoded})
+  } catch (error) {
+    LogError(`[ORM ERROR]: Getting Email By ID: ${error}`);
+  }
+};
