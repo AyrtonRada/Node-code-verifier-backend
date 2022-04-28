@@ -7,7 +7,7 @@ export const getAllKatas = async (page: number, limit: number): Promise<any[] | 
     let kataModel = kataEntity();
     let response: any = {}
 
-    await kataModel.find({isDelete: false})
+    await kataModel.find({isDelete: false}).sort({"level": 1, "stars": 1})
       .limit(limit)
       .skip((page - 1) * limit)
       .exec()

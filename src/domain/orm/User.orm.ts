@@ -138,7 +138,7 @@ export const getKatasFromUser = async (page: number, limit: number, id: string):
       .then(async (user:IUser) => {
         response.user = user.email
 
-        await katasModel.find({"creator": {"$in": id }})
+        await katasModel.find({"creator": {"$in": id }}).sort({"level": 1, "stars": 1})
           .then((katas: IKatas[])=>{
               katasFound = katas
           })
