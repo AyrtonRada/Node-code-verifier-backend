@@ -68,7 +68,7 @@ userRouter.route('/katas')
         let intents: number = req?.body?.intents || 0
         let stars: number = req?.body?.starts || 0
         let creator: string = id
-        let solution: string = req?.body?.solution || ''
+        let solution: string = 'Ésta es la solución para ésta kata'
         let participants: string[] = req?.body?.participants || []
         
         if( name && description && level && intents >= 0 && stars >= 0 && creator && solution && participants.length >= 0){

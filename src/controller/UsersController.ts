@@ -10,7 +10,7 @@ import { getAllUsers, getUserById, deleteUserById, updateUserById, getKatasFromU
 export class UserController implements IUserController {
     
     @Get("/")
-    public async getUsers(@Query()page: number, @Query()limit: number, @Query()id?: string): Promise<any> {
+    public async getUsers(@Query() page: number, @Query() limit: number, @Query() id?: string): Promise<any> {
         
         let response: any = ""
         if(id){
@@ -26,7 +26,7 @@ export class UserController implements IUserController {
     }
 
     @Delete("/")
-    public async deleteUser(@Query()id?: string): Promise<any> {
+    public async deleteUser(@Query() id?: string): Promise<any> {
         let response: any = ""
 
         if(id){
@@ -47,7 +47,7 @@ export class UserController implements IUserController {
     }
 
     @Put("/")
-    public async updateUser(@Query()id: string, user: any): Promise<any> {
+    public async updateUser(@Query() id: string, user: any): Promise<any> {
         let response: any =""
         if(id){
             LogSuccess(`[/api/users] Update User By ID: ${id}`)
@@ -67,7 +67,7 @@ export class UserController implements IUserController {
     }
 
     @Get('/katas')
-    public async getKatas(@Query()page: number, @Query()limit: number, @Query()id: string):Promise<any> {
+    public async getKatas(@Query() page: number, @Query() limit: number, @Query() id: string):Promise<any> {
         let response: any = ''
 
         if(id){
