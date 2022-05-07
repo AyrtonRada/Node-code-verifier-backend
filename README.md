@@ -1,5 +1,5 @@
 # node-code-verifier-backend
-Noed express project - backend
+Node express project - backend
 
 Dependencias instaladas
 
